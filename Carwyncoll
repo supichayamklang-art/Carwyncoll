@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carwyn Coll | Pastel Portfolio</title>
+    <!-- โหลด Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- โหลดฟอนต์ Prompt -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- โหลดไอคอน FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ตั้งค่าพื้นฐาน */
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #fdfbf7;
+            color: #5d5d5d;
+            overflow-x: hidden;
+        }
+
+        /* ซ่อน Scrollbar สำหรับแนวนอนในเมนู */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* กำหนดตัวแปรสีพาสเทล */
+        :root {
+            --pastel-pink: #ffb7b2;
+            --pastel-mint: #b5ead7;
+            --pastel-purple: #c7ceea;
+            --pastel-peach: #ffdac1;
+            --pastel-yellow: #fff5ba;
+        }
+
+        /* Animation: Floating Blobs */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(50px);
+            z-index: -1;
+            opacity: 0.6;
+            animation: float 10s infinite ease-in-out;
+        }
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(20px, -20px) scale(1.1); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        .animate-blob { animation: float 10s infinite; }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
+
+        /* Card Styles */
+        .work-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            aspect-ratio: 1 / 1;
+            cursor: pointer;
+        }
+
+        .work-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .work-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .work-card:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Overlay Styles */
+        .card-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(3px);
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .work-card:hover .card-overlay {
+            opacity: 1;
+        }
+
+        .view-btn {
+            background: linear-gradient(45deg, var(--pastel-pink), var(--pastel-purple));
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(255, 183, 178, 0.4);
+            transform: translateY(20px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .work-card:hover .view-btn {
+            transform: translateY(0);
+        }
+
+        .view-btn:hover {
+            box-shadow: 0 6px 15px rgba(255, 183, 178, 0.6);
+            background: linear-gradient(45deg, var(--pastel-purple), var(--pastel-pink));
+        }
+
+        /* Navigation Styles */
+        .nav-pill {
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        .nav-pill:hover, .nav-pill.active {
+            background-color: var(--pastel-mint); /* Fallback */
+            filter: brightness(0.95);
+            transform: scale(1.05);
+        }
+
+        /* Scroll Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* แก้ไข Scroll Padding เมื่อมี Navbar แบบ Sticky */
+        html {
+            scroll-padding-top: 100px;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen flex flex-col">
+
+    <!-- Background Shapes -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="blob bg-red-200 w-64 h-64 top-0 left-0 mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div class="blob bg-purple-200 w-64 h-64 top-0 right-0 mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div class="blob bg-green-200 w-80 h-80 -bottom-8 -left-20 mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+        <div class="blob bg-yellow-100 w-72 h-72 bottom-10 right-10 mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="text-center py-16 px-4 relative z-10">
+        <div class="inline-block p-2 border-4 border-dashed border-pink-300 rounded-full mb-6 bg-white/50 backdrop-blur-sm shadow-sm">
+            <!-- ใช้ Avatar สมมติ -->
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Carwyn&backgroundColor=ffdfbf" alt="Profile" class="w-32 h-32 rounded-full bg-white">
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold text-gray-700 mb-4 tracking-tight">Carwyn Coll ✨</h1>
+        <div class="max-w-2xl mx-auto space-y-2">
+            <p class="text-lg md:text-xl text-gray-500 font-light">ยินดีต้อนรับสู่คลังของยู นี่คือเว็บไซต์เพื่อเลือกของเพื่อทำป้ายกับยู</p>
+            <p class="text-md md:text-lg text-red-400 font-medium bg-white/60 inline-block px-4 py-1 rounded-full">
+                <i class="fas fa-exclamation-circle mr-2"></i>งดแคปหาวาร์ป พบเจอปรับ 200
+            </p>
+            <p class="text-gray-500 text-sm mt-2">หากอยากได้วาร์ปถามกับยูเท่านั้น ไม่มีค่าถามแน่นอน 💖</p>
+        </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm py-4 border-b border-gray-100">
+        <div class="container mx-auto px-4 overflow-x-auto scrollbar-hide flex gap-2 justify-start md:justify-center py-2" id="category-nav">
+            <!-- ปุ่มหมวดหมู่จะถูกสร้างด้วย JavaScript -->
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-10 relative z-10 flex-grow" id="portfolio-container">
+        <!-- เนื้อหาจะถูกสร้างด้วย JavaScript -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white/80 backdrop-blur border-t-4 border-purple-200 py-12 relative z-10 mt-auto">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold text-gray-700 mb-8 flex items-center justify-center gap-2">
+                <span class="text-pink-400"><i class="fas fa-heart"></i></span> 
+                ช่องทางติดต่อ
+                <span class="text-pink-400"><i class="fas fa-heart"></i></span>
+            </h2>
+            
+            <div class="flex justify-center gap-8 mb-10 flex-wrap">
+                <a href="#" class="group flex flex-col items-center gap-2 text-gray-600 hover:text-blue-600 transition">
+                    <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:bg-blue-200 transition shadow-sm text-blue-500">
+                        <i class="fab fa-facebook-f text-2xl"></i>
+                    </div>
+                    <span class="font-medium text-sm">Facebook</span>
+                </a>
+                <a href="#" class="group flex flex-col items-center gap-2 text-gray-600 hover:text-pink-600 transition">
+                    <div class="w-14 h-14 bg-pink-100 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:bg-pink-200 transition shadow-sm text-pink-500">
+                        <i class="fab fa-instagram text-2xl"></i>
+                    </div>
+                    <span class="font-medium text-sm">Instagram</span>
+                </a>
+                <a href="#" class="group flex flex-col items-center gap-2 text-gray-600 hover:text-green-600 transition">
+                    <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:bg-green-200 transition shadow-sm text-green-500">
+                        <i class="fab fa-line text-2xl"></i>
+                    </div>
+                    <span class="font-medium text-sm">Line ID</span>
+                </a>
+                <a href="#" class="group flex flex-col items-center gap-2 text-gray-600 hover:text-purple-600 transition">
+                    <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:bg-purple-200 transition shadow-sm text-purple-500">
+                        <i class="fas fa-envelope text-2xl"></i>
+                    </div>
+                    <span class="font-medium text-sm">Email</span>
+                </a>
+            </div>
+
+            <div class="border-t border-gray-200 pt-6 max-w-xs mx-auto">
+                <p class="text-gray-400 text-sm">© 2024 Carwyn Coll.</p>
+                <p class="text-gray-300 text-xs mt-1">Designed with Pastel Love</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ==========================================
+        // CONFIGURATION DATA
+        // ==========================================
+        
+        const categories = [
+            { id: 'cat1', name: 'ตัวอย่าง & ปล่อยเอฟ', color: 'bg-pink-100', text: 'text-pink-600' },
+            { id: 'cat2', name: 'กลุ่มรวม', color: 'bg-blue-100', text: 'text-blue-600' },
+            { id: 'cat3', name: 'กลุ่ม BOX', color: 'bg-green-100', text: 'text-green-600' },
+            { id: 'cat4', name: 'กลุ่มตัวตูน', color: 'bg-yellow-100', text: 'text-yellow-700' },
+            { id: 'cat5', name: 'กลุ่มลายเส้น', color: 'bg-purple-100', text: 'text-purple-600' },
+            { id: 'cat6', name: 'กลุ่มฟ้อนต์', color: 'bg-red-100', text: 'text-red-600' },
+            { id: 'cat7', name: 'กลุ่มตุ้งติ้ง', color: 'bg-orange-100', text: 'text-orange-600' },
+            { id: 'cat8', name: 'กลุ่มชิ้นส่วน BOX', color: 'bg-gray-100', text: 'text-gray-600' }
+        ];
+
+        // ฟังก์ชั่นสร้าง URL รูปภาพจำลอง (ใช้สีพาสเทล)
+        function getPlaceholderImage(categoryIndex, itemIndex) {
+            // Palette สีพาสเทล
+            const colors = ['ffb7b2', 'b5ead7', 'c7ceea', 'ffdac1', 'e2f0cb', 'ff9aa2', 'e0bbe4', '957dad'];
+            const bgColor = colors[(categoryIndex + itemIndex) % colors.length];
+            // ใช้บริการสร้างรูปภาพ placeholder
+            return `https://placehold.co/600x600/${bgColor}/ffffff?text=Item+${itemIndex + 1}`;
+        }
+
+        // ==========================================
+        // SYSTEM LOGIC
+        // ==========================================
+
+        const navContainer = document.getElementById('category-nav');
+        const portfolioContainer = document.getElementById('portfolio-container');
+
+        // 1. Generate Navigation Buttons
+        categories.forEach((cat) => {
+            const btn = document.createElement('a');
+            btn.href = `#${cat.id}`;
+            btn.className = `nav-pill inline-block px-5 py-2 mx-1 rounded-full text-gray-600 font-medium cursor-pointer ${cat.color} hover:shadow-md border border-transparent hover:border-white/50`;
+            btn.innerText = cat.name;
+            
+            // Event Listener for Smooth Scroll handled by CSS, but added here for tracking active state logic if needed
+            btn.addEventListener('click', (e) => {
+                // Optional: Manual active state handling logic could go here
+            });
+            
+            navContainer.appendChild(btn);
+        });
+
+        // 2. Generate Content Grid
+        categories.forEach((cat, catIndex) => {
+            // สร้าง Section Container
+            const section = document.createElement('section');
+            section.id = cat.id;
+            section.className = "mb-24 pt-4 reveal"; 
+
+            // สร้าง Header ของแต่ละหมวดหมู่
+            const header = document.createElement('div');
+            header.className = "flex items-center mb-8 border-b border-dashed border-gray-200 pb-4";
+            header.innerHTML = `
+                <div class="w-3 h-10 ${cat.color.replace('bg-', 'bg-')} mr-4 rounded-full shadow-sm"></div>
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-700">
+                    ${cat.name} 
+                    <span class="text-sm font-normal text-gray-400 ml-2">(9 items)</span>
+                </h2>
+            `;
+            section.appendChild(header);
+
+            // สร้าง Grid Container
+            const grid = document.createElement('div');
+            grid.className = "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6";
+
+            // สร้าง Cards (9 ใบต่อหมวด)
+            for (let i = 0; i < 9; i++) {
+                const card = document.createElement('div');
+                card.className = "work-card group";
+                
+                const imgSrc = getPlaceholderImage(catIndex, i);
+                
+                card.innerHTML = `
+                    <img src="${imgSrc}" alt="${cat.name} ${i+1}" loading="lazy">
+                    <div class="card-overlay">
+                        <div class="mb-3 p-3 bg-white rounded-full shadow-sm">
+                             <i class="fas fa-image ${cat.text} text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-700 mb-1">Code: ${cat.id}-${i+1}</h3>
+                        <p class="text-gray-500 text-xs mb-3 font-light">Available for selection</p>
+                        <a href="https://drive.google.com" target="_blank" class="view-btn">
+                            <i class="fas fa-eye mr-2"></i> ดูรูปเต็ม
+                        </a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            }
+
+            section.appendChild(grid);
+            portfolioContainer.appendChild(section);
+        });
+
+        // 3. Scroll Reveal Animation Logic
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealOnScroll = () => {
+            const windowHeight = window.innerHeight;
+            const elementVisible = 100;
+
+            revealElements.forEach((reveal) => {
+                const elementTop = reveal.getBoundingClientRect().top;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+        // Trigger once on load
+        revealOnScroll();
+
+    </script>
+</body>
+</html>
+
